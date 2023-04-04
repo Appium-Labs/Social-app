@@ -4,16 +4,6 @@ import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
-/// Default [FirebaseOptions] for use with your Firebase apps.
-///
-/// Example:
-/// ```dart
-/// import 'firebase_options.dart';
-/// // ...
-/// await Firebase.initializeApp(
-///   options: DefaultFirebaseOptions.currentPlatform,
-/// );
-/// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -66,7 +56,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '966329376483',
     projectId: 'socialapp-1fbd2',
     storageBucket: 'socialapp-1fbd2.appspot.com',
-    iosClientId: '966329376483-qv84gfb3lpt8gh4prita0h8urqvcdico.apps.googleusercontent.com',
+    iosClientId:
+        '966329376483-qv84gfb3lpt8gh4prita0h8urqvcdico.apps.googleusercontent.com',
     iosBundleId: 'com.example.socialApp',
   );
 
@@ -76,7 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '966329376483',
     projectId: 'socialapp-1fbd2',
     storageBucket: 'socialapp-1fbd2.appspot.com',
-    iosClientId: '966329376483-qv84gfb3lpt8gh4prita0h8urqvcdico.apps.googleusercontent.com',
+    iosClientId:
+        '966329376483-qv84gfb3lpt8gh4prita0h8urqvcdico.apps.googleusercontent.com',
     iosBundleId: 'com.example.socialApp',
   );
 }
