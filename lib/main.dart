@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:social_app/Views/NavigationScreen.dart';
+import 'package:social_app/Views/WelcomeScreen/SplashScreen.dart';
 
 import 'Services/firebase_options.dart';
 
@@ -18,10 +19,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Social Media App',
-      home: NavigationScreen(),
+      theme: ThemeData(primaryColor: Color(0xff1C6758)),
+      home: SplashScreen(),
     );
   }
 }
