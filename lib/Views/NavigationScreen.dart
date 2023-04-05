@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:social_app/Views/HomeScreen.dart';
+import 'package:social_app/Views/PostScreen.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
@@ -14,7 +15,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     HomeScreen(),
-    HomeScreen(),
+    PostScreen(),
     HomeScreen(),
     HomeScreen(),
   ];
@@ -74,8 +75,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         onTap: _onItemTapped,
       ),
     );
