@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
+import 'package:social_app/Services/AuthenticationService.dart';
 import 'package:social_app/Views/LoginScreen/OTPTextFeild.dart';
 
 import '../shared/ColoredButton.dart';
@@ -9,10 +11,13 @@ class OTPScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthController controller = Get.find();
     final TextEditingController _firstController = TextEditingController();
     final TextEditingController _secondController = TextEditingController();
     final TextEditingController _thirdController = TextEditingController();
     final TextEditingController _fourthController = TextEditingController();
+    final TextEditingController _fifthController = TextEditingController();
+    final TextEditingController _sixthController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -49,15 +54,26 @@ class OTPScreen extends StatelessWidget {
               height: 20,
             ),
             OTPTextFeild(
-                firstController: _firstController,
-                secondController: _secondController,
-                thirdController: _thirdController,
-                fourthController: _fourthController),
+              firstController: _firstController,
+              secondController: _secondController,
+              thirdController: _thirdController,
+              fourthController: _fourthController,
+              fifthController: _fifthController,
+              sixthController: _sixthController,
+            ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.47,
             ),
             GestureDetector(
-                onTap: () => Get.to(OTPScreen()), child: const ColoredButton()),
+                onTap: () {
+                  controller.verifyOTP(_firstController.text +
+                      _secondController.text +
+                      _thirdController.text +
+                      _fourthController.text +
+                      _fifthController.text +
+                      _sixthController.text);
+                },
+                child: const ColoredButton()),
             const SizedBox(
               height: 5,
             ),

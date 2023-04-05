@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:social_app/Services/AuthenticationService.dart';
 import 'package:social_app/Views/LoginScreen/OTPScreen.dart';
 import 'package:social_app/Views/shared/ColoredButton.dart';
 
@@ -10,6 +12,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthController controller = Get.put(AuthController());
+    String phoneNumber = '';
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -58,6 +62,7 @@ class LoginScreen extends StatelessWidget {
                     ],
                     initialCountryCode: 'IN',
                     onChanged: (phone) {
+                      phoneNumber = phone.completeNumber;
                       print(phone.completeNumber);
                     },
                   )),
@@ -66,7 +71,14 @@ class LoginScreen extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.44,
               ),
               GestureDetector(
-                  onTap: () => Get.to(OTPScreen()),
+                  onTap: () {
+                    if (phoneNumber.length >= 13) {
+                      controller.signUpWithPhoneNumber(phoneNumber);
+                      Get.to(OTPScreen());
+                    } else {
+                      Get.snackbar("Error", "Enter a valid number");
+                    }
+                  },
                   child: const ColoredButton()),
               const SizedBox(
                 height: 5,
