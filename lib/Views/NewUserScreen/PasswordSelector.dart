@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_app/Services/AuthenticationService.dart';
 import 'package:social_app/Views/WelcomeScreen/WelcomeBackScreen.dart';
 import 'package:social_app/Views/shared/ColoredButton.dart';
 
@@ -8,6 +9,7 @@ class PasswordSelectorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthController controller = Get.find();
     TextEditingController usernameController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     TextEditingController confirmPasswordController = TextEditingController();
@@ -64,7 +66,26 @@ class PasswordSelectorScreen extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.25,
             ),
             GestureDetector(
-              onTap: () => Get.to(WelcomeBackScreen()),
+              onTap: () {
+                if (passwordController.text.length > 0 &&
+                    passwordController.text == confirmPasswordController.text &&
+                    usernameController.text.length > 0) {
+                  controller.username.value = usernameController.text;
+                  controller.password.value = passwordController.text;
+                  controller.addUserToFirestore(
+                      fullname: controller.fullName.value,
+                      username: controller.username.value,
+                      email: controller.email.value,
+                      password: controller.password.value,
+                      dateOfBirth: controller.dataOfBirth.value,
+                      gender: controller.gender.value,
+                      bio: controller.bio.value,
+                      profilePhoto: "");
+                  Get.to(WelcomeBackScreen());
+                } else {
+                  Get.snackbar("Error", "Fill all the details correctluy");
+                }
+              },
               child: ColoredButton(),
             )
           ],

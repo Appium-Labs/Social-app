@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_app/Services/AuthenticationService.dart';
 import 'package:social_app/Views/NewUserScreen/PasswordSelector.dart';
 import 'package:social_app/Views/shared/ColoredButton.dart';
 
@@ -15,6 +16,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
   String gender = "Male";
   @override
   Widget build(BuildContext context) {
+    AuthController controller = Get.find();
     TextEditingController fullNameController = TextEditingController();
     TextEditingController emailController = TextEditingController();
     TextEditingController bioController = TextEditingController();
@@ -177,7 +179,21 @@ class _NewUserScreenState extends State<NewUserScreen> {
                 height: 20,
               ),
               GestureDetector(
-                  onTap: () => Get.to(PasswordSelectorScreen()),
+                  onTap: () {
+                    if (fullNameController.text.length > 0 &&
+                        emailController.text.length > 0 &&
+                        bioController.text.length > 0 &&
+                        date.length > 0) {
+                      controller.fullName.value = fullNameController.text;
+                      controller.email.value = emailController.text;
+                      controller.bio.value = bioController.text;
+                      controller.dataOfBirth.value = date;
+                      controller.gender.value = gender;
+                      Get.to(PasswordSelectorScreen());
+                    } else {
+                      Get.snackbar("Error", "Fill all the details");
+                    }
+                  },
                   child: const ColoredButton())
             ],
           ),

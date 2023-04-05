@@ -72,7 +72,7 @@ class LoginScreen extends StatelessWidget {
               ),
               GestureDetector(
                   onTap: () {
-                    if (phoneNumber.length >= 13) {
+                    if (phoneNumber.length >= 12) {
                       controller.signUpWithPhoneNumber(phoneNumber);
                       Get.to(OTPScreen());
                     } else {
