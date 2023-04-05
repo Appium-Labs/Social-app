@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:social_app/Views/LoginScreen/LoginScreen.dart';
 import 'package:social_app/Views/NavigationScreen.dart';
 
 import '../shared/ColoredButton.dart';
@@ -25,10 +26,9 @@ class WelcomeScreen3 extends StatelessWidget {
             height: 20,
           ),
           InkWell(
-              onTap: () => Get.to(NavigationScreen()),
-              child: const ColoredButton()),
+              onTap: () => Get.to(LoginScreen()), child: const ColoredButton()),
           InkWell(
-              onTap: () => Get.to(NavigationScreen()),
+              onTap: () => Get.to(LoginScreen()),
               child: const TransparentButton())
         ],
       ),

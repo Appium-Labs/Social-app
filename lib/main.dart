@@ -19,9 +19,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Social Media App',
+      theme: ThemeData(primaryColor: Color(0xff1C6758)),
       home: SplashScreen(),
     );
   }
