@@ -29,7 +29,7 @@ Widget primaryButton(String text) {
   );
 }
 
-Widget TextInputField(String text) {
+Widget TextInputField(String text, TextEditingController _controller) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -46,6 +46,7 @@ Widget TextInputField(String text) {
         height: 5,
       ),
       TextFormField(
+        controller: _controller,
         cursorColor: greenColor,
         maxLines: 10,
         minLines: 3,

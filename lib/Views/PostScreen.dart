@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -6,9 +8,9 @@ import 'package:social_app/Constants.dart';
 import 'package:social_app/Controllers/PostScreenController.dart';
 
 class PostScreen extends StatelessWidget {
+  final postController = Get.put(PostScreenController());
   @override
   Widget build(BuildContext context) {
-    final postController = Get.put(PostScreenController());
     return Scaffold(
       backgroundColor: appBgColor,
       appBar: AppBar(
@@ -26,52 +28,69 @@ class PostScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(27),
-          child: Column(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Select Image",
-                    style: TextStyle(
-                        fontFamily: 'Poppins',
-                        color: secondaryTextColor,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Obx(
-                    () => Container(
+          child: Obx(
+            () => Column(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Select Image",
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          color: secondaryTextColor,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Container(
                         width: double.infinity,
                         height: 150,
                         decoration: BoxDecoration(
+                          image: postController.isSelected.value == false
+                              ? const DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage(
+                                      "assets/images/transparent.png"))
+                              : DecorationImage(
+                                  fit: BoxFit.contain,
+                                  image:
+                                      MemoryImage(postController.image.value)),
                           color: textFieldColor,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: postController.isSelected.value == false
-                            ? GestureDetector(
+                        child: postController.isSelected.value == true
+                            ? Container()
+                            : GestureDetector(
                                 onTap: () {
                                   postController.selectImage();
                                 },
-                                child: const Icon(Icons.add_circle_outline))
-                            : Image(
-                                image: MemoryImage(postController.image.value),
-                              )),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 17,
-              ),
-              TextInputField("Add caption"),
-              const SizedBox(
-                height: 36,
-              ),
-              primaryButton("Upload"),
-            ],
+                                child: const Icon(Icons.add_circle_outline))),
+                  ],
+                ),
+                const SizedBox(
+                  height: 17,
+                ),
+                TextInputField("Add caption", postController.captionController),
+                const SizedBox(
+                  height: 36,
+                ),
+                postController.isImageUploading.value == true
+                    ? const CircularProgressIndicator(
+                        color: greenColor,
+                      )
+                    : InkWell(
+                        onTap: () {
+                          // print(captionContr/oller.text);
+                          postController.uploadPost(
+                              postController.captionController.text);
+                        },
+                        child: primaryButton("Upload")),
+              ],
+            ),
           ),
         ),
       ),
