@@ -16,10 +16,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
   String gender = "Male";
   @override
   Widget build(BuildContext context) {
-    AuthController controller = Get.find();
-    TextEditingController fullNameController = TextEditingController();
-    TextEditingController emailController = TextEditingController();
-    TextEditingController bioController = TextEditingController();
+    AuthController controller = Get.put(AuthController());
 
     void showDatePickerDialog() async {
       var pickedDate = await showDatePicker(
@@ -49,10 +46,9 @@ class _NewUserScreenState extends State<NewUserScreen> {
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              onPressed: () => Get.back(),
+              onPressed: () {},
               icon: const Icon(
                 Icons.arrow_back_ios_new,
-                color: Colors.black,
               )),
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -83,12 +79,13 @@ class _NewUserScreenState extends State<NewUserScreen> {
               ),
               NewUserTextFeild(
                 heading: "Full name",
-                controller: fullNameController,
+                controller: controller.fullNameController,
               ),
               const SizedBox(
                 height: 15,
               ),
-              NewUserTextFeild(controller: emailController, heading: "Email"),
+              NewUserTextFeild(
+                  controller: controller.emailController, heading: "Email"),
               const SizedBox(
                 height: 20,
               ),
@@ -174,19 +171,20 @@ class _NewUserScreenState extends State<NewUserScreen> {
                   ),
                 ],
               ),
-              BioTextFeild(bioController: bioController),
+              BioTextFeild(bioController: controller.bioController),
               const SizedBox(
                 height: 20,
               ),
               GestureDetector(
                   onTap: () {
-                    if (fullNameController.text.length > 0 &&
-                        emailController.text.length > 0 &&
-                        bioController.text.length > 0 &&
+                    if (controller.fullNameController.text.length > 0 &&
+                        controller.emailController.text.length > 0 &&
+                        controller.bioController.text.length > 0 &&
                         date.length > 0) {
-                      controller.fullName.value = fullNameController.text;
-                      controller.email.value = emailController.text;
-                      controller.bio.value = bioController.text;
+                      controller.fullName.value =
+                          controller.fullNameController.text;
+                      controller.email.value = controller.emailController.text;
+                      controller.bio.value = controller.bioController.text;
                       controller.dataOfBirth.value = date;
                       controller.gender.value = gender;
                       Get.to(PasswordSelectorScreen());
@@ -276,7 +274,7 @@ class NewUserTextFeild extends StatelessWidget {
             child: TextField(
               controller: controller,
               decoration: InputDecoration(
-                hintText: 'Enter ' + heading,
+                hintText: 'Enter $heading',
                 filled: true,
                 fillColor: Colors.grey[200],
                 border: OutlineInputBorder(

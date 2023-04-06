@@ -2,8 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:social_app/Views/AuthenticationScreen/AuthenticationScreen.dart';
 import 'package:social_app/Views/HomeScreen.dart';
 import 'package:social_app/Views/NavigationScreen.dart';
+import 'package:social_app/Views/NewUserScreen/NewUserScreen.dart';
+import 'package:social_app/Views/NewUserScreen/PasswordSelector.dart';
 import 'package:social_app/Views/WelcomeScreen/SplashScreen.dart';
 
 import 'Services/firebase_options.dart';
@@ -29,8 +32,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Social Media App',
       theme: ThemeData(primaryColor: Color(0xff1C6758)),
-      home: userId != null ? NavigationScreen() : SplashScreen(),
-      // home: NavigationScreen(),
+      home: userId != null ? NavigationScreen() : AuthenticationScreen(),
+      // home: PasswordSelectorScreen(),
     );
   }
 }
