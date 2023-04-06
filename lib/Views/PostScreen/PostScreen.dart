@@ -1,11 +1,11 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:social_app/Constants.dart';
 import 'package:social_app/Controllers/PostScreenController.dart';
+import 'package:social_app/Views/PostScreen/Components.dart';
 
 class PostScreen extends StatelessWidget {
   final postController = Get.put(PostScreenController());
@@ -68,7 +68,10 @@ class PostScreen extends StatelessWidget {
                                 onTap: () {
                                   postController.selectImage();
                                 },
-                                child: const Icon(Icons.add_circle_outline))),
+                                child: const Icon(
+                                  Icons.add_circle_rounded,
+                                  color: greenColor,
+                                ))),
                   ],
                 ),
                 const SizedBox(
