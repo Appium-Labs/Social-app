@@ -8,7 +8,6 @@ import 'package:social_app/Views/WelcomeScreen/WelcomeBackScreen.dart';
 class AuthController extends GetxController {
   var isLoading = false.obs;
   var verificationId = "".obs;
-
   var fullName = "".obs;
   var email = "".obs;
   var bio = "".obs;
@@ -16,9 +15,7 @@ class AuthController extends GetxController {
   var gender = "".obs;
   var username = "".obs;
   var password = "".obs;
-
   var user_id = "".obs;
-
   var prefs = GetStorage();
 
   FirebaseAuth auth = FirebaseAuth.instance;
