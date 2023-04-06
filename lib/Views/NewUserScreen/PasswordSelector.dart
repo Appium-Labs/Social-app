@@ -9,10 +9,7 @@ class PasswordSelectorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthController controller = Get.find();
-    TextEditingController usernameController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-    TextEditingController confirmPasswordController = TextEditingController();
+    AuthController controller = Get.put(AuthController());
 
     return Scaffold(
       appBar: AppBar(
@@ -50,28 +47,31 @@ class PasswordSelectorScreen extends StatelessWidget {
               height: 20,
             ),
             NewUserTextFeild(
-                controller: usernameController, heading: "Username"),
+                controller: controller.usernameController, heading: "Username"),
             const SizedBox(
               height: 10,
             ),
             NewUserTextFeild(
-                controller: passwordController, heading: "Password"),
+                controller: controller.passwordController, heading: "Password"),
             const SizedBox(
               height: 10,
             ),
             NewUserTextFeild(
-                controller: confirmPasswordController,
+                controller: controller.confirmPasswordController,
                 heading: "Confirm Password"),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.25,
             ),
             GestureDetector(
               onTap: () {
-                if (passwordController.text.length > 0 &&
-                    passwordController.text == confirmPasswordController.text &&
-                    usernameController.text.length > 0) {
-                  controller.username.value = usernameController.text;
-                  controller.password.value = passwordController.text;
+                if (controller.passwordController.text.length > 0 &&
+                    controller.passwordController.text ==
+                        controller.confirmPasswordController.text &&
+                    controller.usernameController.text.length > 0) {
+                  controller.username.value =
+                      controller.usernameController.text;
+                  controller.password.value =
+                      controller.passwordController.text;
                   controller.addUserToFirestore(
                       fullname: controller.fullName.value,
                       username: controller.username.value,
