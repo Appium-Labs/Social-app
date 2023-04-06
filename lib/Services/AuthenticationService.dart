@@ -59,9 +59,9 @@ class AuthController extends GetxController {
       await prefs.write('user_id', temp);
       print(prefs.read('user_id') + "------");
       if (credential.additionalUserInfo!.isNewUser) {
-        Get.to(NewUserScreen());
+        Get.offAll(NewUserScreen());
       } else {
-        Get.to(WelcomeBackScreen());
+        Get.offAll(WelcomeBackScreen());
       }
     } catch (err) {
       Get.snackbar("Error", "Wrong top or expired, try again");

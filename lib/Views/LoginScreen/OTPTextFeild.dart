@@ -129,7 +129,7 @@ class OTPTextFeild extends StatelessWidget {
             ),
             onChanged: (value) {
               if (value.isNotEmpty) {
-                FocusScope.of(context).unfocus();
+                // FocusScope.of(context).unfocus();
               }
             },
           ),
