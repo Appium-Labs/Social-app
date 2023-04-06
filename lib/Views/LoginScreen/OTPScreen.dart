@@ -76,12 +76,14 @@ class OTPScreen extends StatelessWidget {
                     ),
                     GestureDetector(
                         onTap: () {
-                          controller.verifyOTP(_firstController.text +
-                              _secondController.text +
-                              _thirdController.text +
-                              _fourthController.text +
-                              _fifthController.text +
-                              _sixthController.text);
+                          verifyOTP(
+                              controller,
+                              _firstController,
+                              _secondController,
+                              _thirdController,
+                              _fourthController,
+                              _fifthController,
+                              _sixthController);
                         },
                         child: const ColoredButton()),
                     const SizedBox(
@@ -112,5 +114,21 @@ class OTPScreen extends StatelessWidget {
               ),
       ),
     );
+  }
+
+  void verifyOTP(
+      AuthController controller,
+      TextEditingController _firstController,
+      TextEditingController _secondController,
+      TextEditingController _thirdController,
+      TextEditingController _fourthController,
+      TextEditingController _fifthController,
+      TextEditingController _sixthController) {
+    controller.verifyOTP(_firstController.text +
+        _secondController.text +
+        _thirdController.text +
+        _fourthController.text +
+        _fifthController.text +
+        _sixthController.text);
   }
 }

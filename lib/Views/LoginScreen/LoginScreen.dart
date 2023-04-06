@@ -63,7 +63,9 @@ class LoginScreen extends StatelessWidget {
                     initialCountryCode: 'IN',
                     onChanged: (phone) {
                       phoneNumber = phone.completeNumber;
-                      print(phone.completeNumber);
+                    },
+                    onSubmitted: (value) {
+                      submitPhoen(phoneNumber, controller);
                     },
                   )),
               // Spacer(),
@@ -72,12 +74,7 @@ class LoginScreen extends StatelessWidget {
               ),
               GestureDetector(
                   onTap: () {
-                    if (phoneNumber.length >= 12) {
-                      controller.signUpWithPhoneNumber(phoneNumber);
-                      Get.to(OTPScreen());
-                    } else {
-                      Get.snackbar("Error", "Enter a valid number");
-                    }
+                    submitPhoen(phoneNumber, controller);
                   },
                   child: const ColoredButton()),
               const SizedBox(
@@ -106,5 +103,15 @@ class LoginScreen extends StatelessWidget {
             ],
           ),
         ));
+  }
+
+  void submitPhoen(String phoneNumber, AuthController controller) {
+    print(phoneNumber);
+    if (phoneNumber.length >= 12) {
+      controller.signUpWithPhoneNumber(phoneNumber);
+      Get.to(OTPScreen());
+    } else {
+      Get.snackbar("Error", "Enter a valid number");
+    }
   }
 }
