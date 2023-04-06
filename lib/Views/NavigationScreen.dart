@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:social_app/Views/HomeScreen.dart';
-import 'package:social_app/Views/PostScreen.dart';
+import 'package:social_app/Views/HomeScreen/HomeScreen.dart';
+import 'package:social_app/Views/PostScreen/PostScreen.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
