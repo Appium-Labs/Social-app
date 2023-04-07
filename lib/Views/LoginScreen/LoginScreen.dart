@@ -13,6 +13,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthController controller = Get.put(AuthController());
+    TextEditingController phoneController = TextEditingController();
     String phoneNumber = '';
     return Scaffold(
         appBar: AppBar(
@@ -50,6 +51,7 @@ class LoginScreen extends StatelessWidget {
                   margin:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: IntlPhoneField(
+                    controller: phoneController,
                     decoration: const InputDecoration(
                       labelText: 'Phone Number',
                       border: OutlineInputBorder(
@@ -62,6 +64,7 @@ class LoginScreen extends StatelessWidget {
                     ],
                     initialCountryCode: 'IN',
                     onChanged: (phone) {
+                      print(phone.completeNumber);
                       phoneNumber = phone.completeNumber;
                     },
                     onSubmitted: (value) {
@@ -74,6 +77,8 @@ class LoginScreen extends StatelessWidget {
               ),
               GestureDetector(
                   onTap: () {
+                    print("ccccccccccccccccccccccccccccccc");
+                    print(phoneNumber);
                     submitPhoen(phoneNumber, controller);
                   },
                   child: const ColoredButton()),
