@@ -1,13 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:social_app/Views/NewUserScreen/NewUserScreen.dart';
 import 'package:social_app/Views/WelcomeScreen/WelcomeBackScreen.dart';
 
 class AuthController extends GetxController {
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController bioController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   var isLoading = false.obs;
   var verificationId = "".obs;
+  var phoneNumber = "".obs;
+  var otpControllers = List.generate(6, (index) => TextEditingController());
   var fullName = "".obs;
   var email = "".obs;
   var bio = "".obs;
@@ -19,36 +28,39 @@ class AuthController extends GetxController {
   var prefs = GetStorage();
 
   FirebaseAuth auth = FirebaseAuth.instance;
-  Future<void> signUpWithPhoneNumber(String phoneNumber) async {
-    print("first");
-    await auth.verifyPhoneNumber(
-      phoneNumber: phoneNumber,
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        await auth.signInWithCredential(credential);
-        print("singup complete");
-      },
-      verificationFailed: (FirebaseAuthException e) {
-        print(e.message);
-        if (e.code == 'phone-already-in-use') {
-          // The phone number is already registered
-          Get.snackbar("Error", "Phone number already in use please sign-in");
-          return;
-        }
-        if (e.code == 'invalid-phone-number') {
-          print('The provided phone number is not valid.');
-        }
-      },
-      codeSent: (String verificationId, int? resendToken) async {
-        this.verificationId.value = verificationId;
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {},
-    );
-    print("secnod");
+  Future<bool> signUpWithPhoneNumber(String phoneNumber) async {
+    try {
+      await auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await auth.signInWithCredential(credential);
+          print("singup complete");
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          print(e.message);
+          if (e.code == 'phone-already-in-use') {
+            // The phone number is already registered
+            Get.snackbar("Error", "Phone number already in use please sign-in");
+            return;
+          }
+          if (e.code == 'invalid-phone-number') {
+            print('The provided phone number is not valid.');
+          }
+        },
+        codeSent: (String verificationId, int? resendToken) async {
+          this.verificationId.value = verificationId;
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {},
+      );
+      return true;
+    } catch (err) {
+      return false;
+    }
   }
 
   void verifyOTP(String otp) async {
     // Get.to(NewUserScreen());
-    isLoading.value = true;
+    // isLoading.value = true;
     try {
       var credential = await auth.signInWithCredential(
           PhoneAuthProvider.credential(
@@ -64,9 +76,11 @@ class AuthController extends GetxController {
         Get.offAll(WelcomeBackScreen());
       }
     } catch (err) {
-      Get.snackbar("Error", "Wrong top or expired, try again");
+      Get.rawSnackbar(
+          title: "Error",
+          message: "Wrong top or expired, try again" + err.toString());
     }
-    isLoading.value = false;
+    // isLoading.value = false;
   }
 
   Future<void> addUserToFirestore({
