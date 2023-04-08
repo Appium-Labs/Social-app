@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:social_app/Controllers/PrfileController.dart';
+import 'package:social_app/Views/ProfileScreen/EditProfileScreen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -90,7 +91,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     SliverToBoxAdapter(
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () => Get.to(EditProfileScreen()),
                         child: Container(
                           alignment: Alignment.center,
                           height: 50,

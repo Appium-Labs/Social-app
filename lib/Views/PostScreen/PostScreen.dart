@@ -92,7 +92,9 @@ class PostScreen extends StatelessWidget {
                           // print(captionContr/oller.text);
                           postController.uploadPost(
                               postController.captionController.text);
-                          profileController.onInit();
+                          Future.delayed(Duration(seconds: 5), () {
+                            profileController.onInit();
+                          });
                         },
                         child: primaryButton("Upload")),
               ],
