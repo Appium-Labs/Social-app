@@ -8,9 +8,8 @@ import 'package:social_app/Views/HomeScreen/Components/DateConverter.dart';
 import '../CommentScreen.dart';
 
 Widget postCard(final snap, final comments) {
-  HomeScreenController homeScreenController =
-      Get.put(HomeScreenController(postId: snap["postID"]));
-  // homeScreenController.onInit();
+  HomeScreenController homeScreenController = Get.put(HomeScreenController());
+
   return Container(
     decoration: BoxDecoration(
         color: postPrimaryColor,
@@ -81,20 +80,35 @@ Widget postCard(final snap, final comments) {
         Row(
           mainAxisSize: MainAxisSize.max,
           children: [
-            GestureDetector(
-                onTap: () {
-                  homeScreenController.likeHandler(
-                      snap["likes"], snap["postID"]);
-                },
-                child: snap["likes"].contains(snap["userID"])
-                    ? const Icon(
-                        Icons.favorite,
-                        color: Colors.red,
-                      )
-                    : Icon(
-                        Icons.favorite,
-                        color: Colors.grey[400],
-                      )),
+            snap["likes"].contains(snap["userID"])
+                ? GestureDetector(
+                    onTap: () {
+                      homeScreenController.likeHandler(
+                          snap["likes"], snap["postID"]);
+                    },
+                    child: TweenAnimationBuilder(
+                      duration: const Duration(milliseconds: 500),
+                      tween:
+                          ColorTween(end: Colors.red, begin: Colors.grey[400]),
+                      builder: (context, value, child) {
+                        return Icon(Icons.favorite, color: value);
+                      },
+                    ),
+                  )
+                : GestureDetector(
+                    onTap: () {
+                      homeScreenController.likeHandler(
+                          snap["likes"], snap["postID"]);
+                    },
+                    child: TweenAnimationBuilder(
+                      duration: const Duration(milliseconds: 500),
+                      tween:
+                          ColorTween(begin: Colors.red, end: Colors.grey[400]),
+                      builder: (context, value, child) {
+                        return Icon(Icons.favorite, color: value);
+                      },
+                    ),
+                  ),
             const SizedBox(
               width: 5,
             ),
