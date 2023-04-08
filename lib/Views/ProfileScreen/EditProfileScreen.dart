@@ -47,9 +47,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              onPressed: () {},
+              onPressed: () => Get.back(),
               icon: const Icon(
                 Icons.arrow_back_ios_new,
+                color: Colors.black,
               )),
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -74,6 +75,38 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   "Please fill the following",
                   style: TextStyle(fontSize: 16),
                 ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      controller.selectImage();
+                    },
+                    child: Obx(
+                      () => Container(
+                        height: 120,
+                        width: 120,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: Colors.grey[300],
+                          image: controller.isSelected.value == false
+                              ? const DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage(
+                                      "assets/images/transparent.png"))
+                              : DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: MemoryImage(controller.image.value)),
+                        ),
+                        child: Icon(Icons.edit),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 20,
