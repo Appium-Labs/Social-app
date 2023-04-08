@@ -1,11 +1,20 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:social_app/Models/PostModel.dart';
 import 'package:social_app/Models/UserModel.dart';
 
+import '../Services/StorageMethods.dart';
+
 class ProfileController extends GetxController {
+  Rx<Uint8List> image = Uint8List(0).obs;
+  RxBool isSelected = false.obs;
+  RxBool isImageUploading = false.obs;
+  RxBool isImageUploaded = false.obs;
   TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController bioController = TextEditingController();
@@ -106,8 +115,11 @@ class ProfileController extends GetxController {
     required String bio,
     required String profilePhoto,
   }) async {
+    isLoading.value = true;
     try {
       // Get a reference to the Firestore collection
+      String profilePhoto = await StorageMethods()
+          .uploadImageToFirebase("posts", image.value, true);
       CollectionReference users =
           FirebaseFirestore.instance.collection('users');
 
@@ -127,5 +139,19 @@ class ProfileController extends GetxController {
       print('Error adding user to Firestore: $e');
     }
     getCurrentUser();
+    isLoading.value = false;
+  }
+
+  void selectImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? imageFile =
+        await picker.pickImage(source: ImageSource.gallery);
+    if (imageFile != null) {
+      image.value = await imageFile.readAsBytes();
+      isSelected.value = true;
+      print(image.value);
+    } else {
+      print("No Image Selected!");
+    }
   }
 }
