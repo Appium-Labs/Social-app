@@ -6,25 +6,12 @@ import 'package:uuid/uuid.dart';
 
 class HomeScreenController extends GetxController
     with GetTickerProviderStateMixin {
-  RxInt comments = 0.obs;
-  String postId;
   TextEditingController commentController = TextEditingController();
-  HomeScreenController({required this.postId});
   RxBool isUploadingComment = false.obs;
+
   @override
   void onInit() {
     super.onInit();
-    getComments();
-  }
-
-  void getComments() async {
-    print("isideeeeeeeeee");
-    QuerySnapshot snap = await FirebaseFirestore.instance
-        .collection("posts")
-        .doc(postId)
-        .collection("comments")
-        .get();
-    comments.value = snap.docs.length;
   }
 
   void likeHandler(List<dynamic> postLikes, String postID) async {
@@ -35,6 +22,30 @@ class HomeScreenController extends GetxController
       });
     } else {
       await FirebaseFirestore.instance.collection("posts").doc(postID).update({
+        "likes": FieldValue.arrayUnion([userID])
+      });
+    }
+  }
+
+  void commentLikeHandler(
+      List<dynamic> commentLikes, String postID, String commentID) async {
+    const userID = "5mOCKrOcDuf3iqBp64Ls38boZ973";
+    if (commentLikes.contains(userID)) {
+      await FirebaseFirestore.instance
+          .collection("posts")
+          .doc(postID)
+          .collection("comments")
+          .doc(commentID)
+          .update({
+        "likes": FieldValue.arrayRemove([userID])
+      });
+    } else {
+      await FirebaseFirestore.instance
+          .collection("posts")
+          .doc(postID)
+          .collection("comments")
+          .doc(commentID)
+          .update({
         "likes": FieldValue.arrayUnion([userID])
       });
     }

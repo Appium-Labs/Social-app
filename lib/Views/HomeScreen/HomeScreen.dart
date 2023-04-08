@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:social_app/Constants.dart';
 import 'package:social_app/Views/HomeScreen/Components/postCard.dart';
@@ -14,10 +11,11 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: appBgColor,
-        leading: Container(
+        title: Container(
             margin: const EdgeInsets.only(left: 8),
             child: SvgPicture.asset(
               "assets/icons/logo.svg",
+              height: 50,
             )),
         actions: const [
           Padding(
@@ -50,7 +48,20 @@ class HomeScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (ctx, idx) {
-                  return postCard(snapshot.data!.docs[idx]);
+                  return FutureBuilder(
+                    future: FirebaseFirestore.instance
+                        .collection("posts")
+                        .doc(snapshot.data!.docs[idx]["postID"])
+                        .collection("comments")
+                        .get(),
+                    builder: (context, s) {
+                      if (s.hasData) {
+                        return postCard(
+                            snapshot.data!.docs[idx], s.data!.docs.length);
+                      }
+                      return Container();
+                    },
+                  );
                 },
               ));
             },

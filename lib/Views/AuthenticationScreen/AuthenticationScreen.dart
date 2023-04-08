@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:social_app/Views/AuthenticationScreen/OTPScreen.dart';
-import 'package:social_app/Services/AuthenticationService.dart';
+import 'package:social_app/Controllers/AuthenticationService.dart';
 
 import '../shared/ColoredButton.dart';
 
@@ -13,8 +13,6 @@ class AuthenticationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthController controller = Get.put(AuthController());
-    // TextEditingController phoneController = TextEditingController();
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -75,7 +73,7 @@ class AuthenticationScreen extends StatelessWidget {
             GestureDetector(
                 onTap: () {
                   if (controller.phoneNumber.value.length >= 13) {
-                    Get.to(OTPScreen());
+                    // Get.to(OTPScreen());
                     controller
                         .signUpWithPhoneNumber(controller.phoneNumber.value)
                         .then((value) {
