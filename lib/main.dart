@@ -33,7 +33,6 @@ class MyApp extends StatelessWidget {
       title: 'Social Media App',
       theme: ThemeData(primaryColor: Color(0xff1C6758)),
       home: userId != null ? NavigationScreen() : AuthenticationScreen(),
-      // home: PasswordSelectorScreen(),
     );
   }
 }

@@ -14,7 +14,7 @@ class HomeScreenController extends GetxController
   @override
   void onInit() {
     super.onInit();
-    getComments();
+    // getComments();
   }
 
   void getComments() async {
@@ -35,6 +35,30 @@ class HomeScreenController extends GetxController
       });
     } else {
       await FirebaseFirestore.instance.collection("posts").doc(postID).update({
+        "likes": FieldValue.arrayUnion([userID])
+      });
+    }
+  }
+
+  void commentLikeHandler(
+      List<dynamic> commentLikes, String postID, String commentID) async {
+    const userID = "5mOCKrOcDuf3iqBp64Ls38boZ973";
+    if (commentLikes.contains(userID)) {
+      await FirebaseFirestore.instance
+          .collection("posts")
+          .doc(postID)
+          .collection("comments")
+          .doc(commentID)
+          .update({
+        "likes": FieldValue.arrayRemove([userID])
+      });
+    } else {
+      await FirebaseFirestore.instance
+          .collection("posts")
+          .doc(postID)
+          .collection("comments")
+          .doc(commentID)
+          .update({
         "likes": FieldValue.arrayUnion([userID])
       });
     }

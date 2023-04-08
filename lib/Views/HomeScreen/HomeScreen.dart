@@ -14,10 +14,11 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: appBgColor,
-        leading: Container(
+        title: Container(
             margin: const EdgeInsets.only(left: 8),
             child: SvgPicture.asset(
               "assets/icons/logo.svg",
+              height: 50,
             )),
         actions: const [
           Padding(
@@ -50,7 +51,21 @@ class HomeScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (ctx, idx) {
-                  return postCard(snapshot.data!.docs[idx]);
+                  return FutureBuilder(
+                    future: FirebaseFirestore.instance
+                        .collection("posts")
+                        .doc(snapshot.data!.docs[idx]["postID"])
+                        .collection("comments")
+                        .get(),
+                    builder: (context, s) {
+                      if (s.hasData) {
+                        return postCard(
+                            snapshot.data!.docs[idx], s.data!.docs.length);
+                      }
+
+                      return Container();
+                    },
+                  );
                 },
               ));
             },

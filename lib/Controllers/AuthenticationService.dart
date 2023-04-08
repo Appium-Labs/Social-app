@@ -47,8 +47,8 @@ class AuthController extends GetxController {
             print('The provided phone number is not valid.');
           }
         },
-        codeSent: (String verificationId, int? resendToken) async {
-          this.verificationId.value = verificationId;
+        codeSent: (String? verificationId, int? resendToken) async {
+          this.verificationId.value = verificationId!;
         },
         codeAutoRetrievalTimeout: (String verificationId) {},
       );
@@ -59,8 +59,6 @@ class AuthController extends GetxController {
   }
 
   void verifyOTP(String otp) async {
-    // Get.to(NewUserScreen());
-    // isLoading.value = true;
     try {
       var credential = await auth.signInWithCredential(
           PhoneAuthProvider.credential(
@@ -78,7 +76,7 @@ class AuthController extends GetxController {
     } catch (err) {
       Get.rawSnackbar(
           title: "Error",
-          message: "Wrong top or expired, try again" + err.toString());
+          message: "Wrong OTP or expired, try again" + err.toString());
     }
     // isLoading.value = false;
   }

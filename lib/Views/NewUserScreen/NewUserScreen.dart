@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_app/Services/AuthenticationService.dart';
+import 'package:social_app/Controllers/AuthenticationService.dart';
 import 'package:social_app/Views/NewUserScreen/PasswordSelector.dart';
 import 'package:social_app/Views/shared/ColoredButton.dart';
 

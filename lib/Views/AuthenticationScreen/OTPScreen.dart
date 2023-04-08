@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:social_app/Services/AuthenticationService.dart';
+import 'package:social_app/Controllers/AuthenticationService.dart';
 
 import '../shared/ColoredButton.dart';
 

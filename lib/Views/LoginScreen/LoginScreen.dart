@@ -3,9 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:social_app/Services/AuthenticationService.dart';
-import 'package:social_app/Views/LoginScreen/OTPScreen.dart';
+import 'package:social_app/Controllers/AuthenticationService.dart';
 import 'package:social_app/Views/shared/ColoredButton.dart';
+
+import '../AuthenticationScreen/OTPScreen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
