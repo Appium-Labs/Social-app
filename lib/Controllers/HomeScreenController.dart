@@ -6,25 +6,12 @@ import 'package:uuid/uuid.dart';
 
 class HomeScreenController extends GetxController
     with GetTickerProviderStateMixin {
-  RxInt comments = 0.obs;
-  String postId;
   TextEditingController commentController = TextEditingController();
-  HomeScreenController({required this.postId});
   RxBool isUploadingComment = false.obs;
+
   @override
   void onInit() {
     super.onInit();
-    // getComments();
-  }
-
-  void getComments() async {
-    print("isideeeeeeeeee");
-    QuerySnapshot snap = await FirebaseFirestore.instance
-        .collection("posts")
-        .doc(postId)
-        .collection("comments")
-        .get();
-    comments.value = snap.docs.length;
   }
 
   void likeHandler(List<dynamic> postLikes, String postID) async {
