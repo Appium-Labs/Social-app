@@ -5,10 +5,12 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:social_app/Constants.dart';
 import 'package:social_app/Controllers/PostScreenController.dart';
+import 'package:social_app/Controllers/PrfileController.dart';
 import 'package:social_app/Views/PostScreen/Components.dart';
 
 class PostScreen extends StatelessWidget {
   final postController = Get.put(PostScreenController());
+  ProfileController profileController = Get.put(ProfileController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,6 +92,7 @@ class PostScreen extends StatelessWidget {
                           // print(captionContr/oller.text);
                           postController.uploadPost(
                               postController.captionController.text);
+                          profileController.onInit();
                         },
                         child: primaryButton("Upload")),
               ],
