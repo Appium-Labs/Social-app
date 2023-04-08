@@ -1,10 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:social_app/Models/PostModel.dart';
 import 'package:social_app/Models/UserModel.dart';
 
 class ProfileController extends GetxController {
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController bioController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  var verificationId = "".obs;
+  var phoneNumber = "".obs;
+  var otpControllers = List.generate(6, (index) => TextEditingController());
+  var fullName = "".obs;
+  var email = "".obs;
+  var bio = "".obs;
+  var dataOfBirth = "".obs;
+  var gender = "".obs;
+  var username = "".obs;
   final prefs = GetStorage();
   var user = UserModel(
       fullname: "",
@@ -69,6 +85,7 @@ class ProfileController extends GetxController {
 
     List<QueryDocumentSnapshot> documents = querySnapshot.docs;
     print(documents.length);
+    posts.value = [];
     documents.forEach((document) {
       posts.add(Post(
           postID: document.get("postID"),
@@ -79,5 +96,36 @@ class ProfileController extends GetxController {
           postUrl: document.get("postUrl")));
     });
     isLoading.value = false;
+  }
+
+  Future<void> addUserToFirestore({
+    required String fullname,
+    required String username,
+    required String dateOfBirth,
+    required String gender,
+    required String bio,
+    required String profilePhoto,
+  }) async {
+    try {
+      // Get a reference to the Firestore collection
+      CollectionReference users =
+          FirebaseFirestore.instance.collection('users');
+
+      var id = prefs.read("user_id");
+      // Add a new user to the collection
+      await users.doc(id).update({
+        'fullname': fullname,
+        'username': username,
+        'dateOfBirth': dateOfBirth,
+        'gender': gender,
+        'bio': bio,
+        'profilePhoto': profilePhoto,
+      });
+
+      print('User added to Firestore successfully');
+    } catch (e) {
+      print('Error adding user to Firestore: $e');
+    }
+    getCurrentUser();
   }
 }
