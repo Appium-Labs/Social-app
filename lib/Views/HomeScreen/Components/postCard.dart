@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_app/Constants.dart';
 import 'package:social_app/Controllers/HomeScreenController.dart';
+import 'package:social_app/Views/HomeScreen/Components/DateConverter.dart';
 
 import '../CommentScreen.dart';
 
-Widget postCard(final snap) {
+Widget postCard(final snap, final comments) {
   HomeScreenController homeScreenController =
       Get.put(HomeScreenController(postId: snap["postID"]));
+  // homeScreenController.onInit();
   return Container(
     decoration: BoxDecoration(
         color: postPrimaryColor,
@@ -85,7 +87,7 @@ Widget postCard(final snap) {
                       snap["likes"], snap["postID"]);
                 },
                 child: snap["likes"].contains(snap["userID"])
-                    ? Icon(
+                    ? const Icon(
                         Icons.favorite,
                         color: Colors.red,
                       )
@@ -122,64 +124,37 @@ Widget postCard(final snap) {
             const SizedBox(
               width: 5,
             ),
-            Obx(
-              () => Text(
-                homeScreenController.comments.value.toString(),
-                style: const TextStyle(
-                    fontFamily: 'Roboto',
-                    color: primaryTextColor,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 12),
-              ),
+            Text(
+              comments.toString(),
+              style: const TextStyle(
+                  fontFamily: 'Roboto',
+                  color: primaryTextColor,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 12),
             ),
           ],
         ),
         const SizedBox(
           height: 6,
         ),
-        Obx(
-          () => GestureDetector(
-            onTap: () {
-              Get.to(CommentScreen(
-                snap: snap,
-              ));
-            },
-            child: Text(
-              "View all ${homeScreenController.comments.value.toString()} comments",
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: secondaryTextColor,
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 13),
-            ),
+        GestureDetector(
+          onTap: () {
+            Get.to(CommentScreen(
+              snap: snap,
+            ));
+          },
+          child: Text(
+            "View all ${comments.toString()} comments",
+            style: TextStyle(
+                fontFamily: 'Roboto',
+                color: secondaryTextColor,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.w500,
+                fontSize: 13),
           ),
-        )
+        ),
       ],
     ),
   );
-}
-
-String getDate(Timestamp timeStamp) {
-  DateTime postDateTime = timeStamp.toDate();
-  DateTime currentDateTime = DateTime.now();
-  final dayDiff = currentDateTime.difference(postDateTime).inDays;
-  final hourDiff = currentDateTime.difference(postDateTime).inHours;
-  final minuteDiff = currentDateTime.difference(postDateTime).inMinutes;
-  if (minuteDiff <= 60) {
-    return minuteDiff.toString() + " minutes ago";
-  } else if (hourDiff <= 24) {
-    return hourDiff.toString() + " hours ago";
-  } else if (dayDiff <= 29) {
-    return dayDiff.toString() + " days ago";
-  } else {
-    int monthDiff = int.parse((dayDiff / 30).toString());
-    if (monthDiff >= 12) {
-      return monthDiff.toString() + " months ago";
-    } else {
-      int yearDiff = int.parse((monthDiff / 12).toString());
-      return yearDiff.toString() + " years ago";
-    }
-  }
 }
