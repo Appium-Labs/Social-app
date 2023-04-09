@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:social_app/Constants.dart';
+import 'package:social_app/Controllers/ChatController.dart';
 import 'package:social_app/Controllers/PrfileController.dart';
 import 'package:social_app/Controllers/UserController.dart';
+import 'package:social_app/Views/ChatScreen/chatScreen.dart';
 
 import '../ProfileScreen/EditProfileScreen.dart';
 
@@ -17,6 +20,7 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
+    ChatController chatController = Get.put(ChatController());
     final prefs = GetStorage();
     UserController controller = Get.put(UserController());
     controller.getUser(widget.userId);
@@ -41,8 +45,7 @@ class _UserScreenState extends State<UserScreen> {
       body: Obx(
         () => controller.isLoading.value
             ? const Center(
-                child:
-                    CircularProgressIndicator(color: const Color(0xff1C6758)),
+                child: CircularProgressIndicator(color: Color(0xff1C6758)),
               )
             : Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -68,15 +71,55 @@ class _UserScreenState extends State<UserScreen> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  controller.user.value.fullname.toString(),
-                                  style: const TextStyle(
-                                      fontSize: 19,
-                                      fontWeight: FontWeight.bold),
+                                Row(
+                                  children: [
+                                    Text(
+                                      controller.user.value.fullname.toString(),
+                                      style: const TextStyle(
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    isThisMe
+                                        ? Container()
+                                        : GestureDetector(
+                                            onTap: () {
+                                              chatController.generateRoomId(
+                                                  widget.userId,
+                                                  prefs
+                                                      .read("user_id")
+                                                      .toString());
+                                              chatController.createRoom(
+                                                  prefs
+                                                      .read("user_id")
+                                                      .toString(),
+                                                  controller.user.value,
+                                                  widget.userId);
+                                              Get.to(ChatScreen(
+                                                peerName: controller
+                                                    .user.value.username,
+                                                peerProfileImg: controller
+                                                    .user.value.profilePhoto,
+                                                peerID: widget.userId,
+                                                roomID:
+                                                    chatController.roomID.value,
+                                                userID: prefs
+                                                    .read("user_id")
+                                                    .toString(),
+                                              ));
+                                            },
+                                            child: const Icon(
+                                              Icons.message_rounded,
+                                              color: greenColor,
+                                            ),
+                                          )
+                                  ],
                                 ),
-                                const Text(
-                                  "Delhi, India",
-                                  style: TextStyle(
+                                Text(
+                                  controller.user.value.username.toString(),
+                                  style: const TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w500),
                                 ),

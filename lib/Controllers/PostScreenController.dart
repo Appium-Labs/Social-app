@@ -1,7 +1,6 @@
 import 'dart:typed_data';
-import 'dart:io';
-import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -31,13 +30,6 @@ class PostScreenController extends GetxController {
   TextEditingController captionController = TextEditingController();
   final prefs = GetStorage();
 
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    getCurrentUser();
-  }
-
   void selectImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? imageFile =
@@ -53,7 +45,8 @@ class PostScreenController extends GetxController {
 
   void uploadPost(String caption) async {
     final FirebaseFirestore _firebaseStorage = FirebaseFirestore.instance;
-    var userID = prefs.read("user_id").toString();
+    String userID = prefs.read("user_id");
+
     var postID = const Uuid().v1();
     isImageUploading.value = true;
     String postUrl = await StorageMethods()
