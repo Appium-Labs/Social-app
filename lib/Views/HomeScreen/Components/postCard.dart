@@ -88,6 +88,7 @@ Widget postCard(final snap, final comments) {
                     },
                     child: TweenAnimationBuilder(
                       duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeOut,
                       tween:
                           ColorTween(end: Colors.red, begin: Colors.grey[400]),
                       builder: (context, value, child) {

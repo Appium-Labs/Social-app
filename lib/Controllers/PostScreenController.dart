@@ -1,8 +1,7 @@
 import 'dart:typed_data';
-import 'dart:io';
-import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 import 'package:social_app/Models/PostModel.dart';
@@ -15,6 +14,7 @@ class PostScreenController extends GetxController {
   RxBool isImageUploading = false.obs;
   RxBool isImageUploaded = false.obs;
   TextEditingController captionController = TextEditingController();
+  final prefs = GetStorage();
 
   void selectImage() async {
     final ImagePicker picker = ImagePicker();
@@ -31,7 +31,8 @@ class PostScreenController extends GetxController {
 
   void uploadPost(String caption) async {
     final FirebaseFirestore _firebaseStorage = FirebaseFirestore.instance;
-    String userID = "5mOCKrOcDuf3iqBp64Ls38boZ973";
+
+    String userID = prefs.read("user_id");
     var postID = const Uuid().v1();
     isImageUploading.value = true;
     String postUrl = await StorageMethods()
