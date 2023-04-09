@@ -1,14 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:social_app/Controllers/PrfileController.dart';
+import 'package:social_app/Controllers/UserController.dart';
 
-class UserScreen extends StatelessWidget {
+import '../ProfileScreen/EditProfileScreen.dart';
+
+class UserScreen extends StatefulWidget {
   final String userId;
   const UserScreen({super.key, required this.userId});
 
   @override
+  State<UserScreen> createState() => _UserScreenState();
+}
+
+class _UserScreenState extends State<UserScreen> {
+  @override
   Widget build(BuildContext context) {
-    ProfileController controller = Get.put(ProfileController());
+    final prefs = GetStorage();
+    UserController controller = Get.put(UserController());
+    controller.getUser(widget.userId);
+    controller.getPosts(widget.userId);
+    bool isAlreadyFollowing = false;
+    controller
+        .checkIfUserIsFollower(prefs.read("user_id"), widget.userId)
+        .then((value) => isAlreadyFollowing = value);
+
+    bool isThisMe = widget.userId == prefs.read("user_id").toString();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -88,24 +106,71 @@ class UserScreen extends StatelessWidget {
                         height: 20,
                       ),
                     ),
-                    SliverToBoxAdapter(
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 50,
-                          decoration: BoxDecoration(
-                              color: const Color(0xff1C6758),
-                              borderRadius: BorderRadius.circular(20)),
-                          child: const Text(
-                            "Edit Profile",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600),
+                    isThisMe
+                        ? SliverToBoxAdapter(
+                            child: GestureDetector(
+                              onTap: () => Get.to(EditProfileScreen()),
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    color: const Color(0xff1C6758),
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: const Text(
+                                  "Edit Profile",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            ),
+                          )
+                        : SliverToBoxAdapter(
+                            child: GestureDetector(
+                              onTap: () {
+                                if (isAlreadyFollowing) {
+                                  controller
+                                      .unfollowUser(
+                                          prefs.read("user_id"), widget.userId)
+                                      .then((value) => setState(() {
+                                            isAlreadyFollowing =
+                                                !isAlreadyFollowing;
+                                          }));
+                                } else {
+                                  controller
+                                      .updateFollowersAndFollowing(
+                                          prefs.read("user_id").toString(),
+                                          widget.userId)
+                                      .then((value) => setState(() {
+                                            isAlreadyFollowing =
+                                                !isAlreadyFollowing;
+                                          }));
+                                }
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Color(0xff1C6758),
+                                        width: isAlreadyFollowing ? 1 : 0),
+                                    color: isAlreadyFollowing == true
+                                        ? Colors.white
+                                        : const Color(0xff1C6758),
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Text(
+                                  isAlreadyFollowing == true
+                                      ? "Unfollow"
+                                      : "Follow",
+                                  style: TextStyle(
+                                      color: isAlreadyFollowing == true
+                                          ? Color(0xff1C6758)
+                                          : Colors.white,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
                     const SliverToBoxAdapter(
                       child: SizedBox(
                         height: 20,
@@ -134,7 +199,7 @@ class UserScreen extends StatelessWidget {
                             Column(
                               children: [
                                 Text(
-                                  (controller.user.value.following.length - 1)
+                                  (controller.user.value.following.length)
                                       .toString(),
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
@@ -149,7 +214,7 @@ class UserScreen extends StatelessWidget {
                             Column(
                               children: [
                                 Text(
-                                  (controller.user.value.followers.length - 1)
+                                  (controller.user.value.followers.length)
                                       .toString(),
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),

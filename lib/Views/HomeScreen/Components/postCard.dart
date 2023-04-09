@@ -4,12 +4,13 @@ import 'package:get/get.dart';
 import 'package:social_app/Constants.dart';
 import 'package:social_app/Controllers/HomeScreenController.dart';
 import 'package:social_app/Views/HomeScreen/Components/DateConverter.dart';
+import 'package:social_app/Views/UserScreen/UserScreen.dart';
 
 import '../CommentScreen.dart';
 
 Widget postCard(final snap, final comments) {
   HomeScreenController homeScreenController = Get.put(HomeScreenController());
-  print(snap["userID"]);
+  // print();
   return Container(
     decoration: BoxDecoration(
         color: postPrimaryColor,
@@ -20,32 +21,35 @@ Widget postCard(final snap, final comments) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ListTile(
-          contentPadding: const EdgeInsets.all(0),
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: Image.network(
-              snap["userProfileImg"],
-              fit: BoxFit.fill,
+        GestureDetector(
+          onTap: () => Get.to(UserScreen(userId: snap["userID"])),
+          child: ListTile(
+            contentPadding: const EdgeInsets.all(0),
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: Image.network(
+                snap["userProfileImg"],
+                fit: BoxFit.fill,
+              ),
             ),
-          ),
-          title: Text(
-            snap["username"],
-            style: const TextStyle(
-                fontFamily: 'Poppins',
-                color: primaryTextColor,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w600,
-                fontSize: 15),
-          ),
-          subtitle: Text(
-            getDate(snap["dateTime"]),
-            style: const TextStyle(
-                fontFamily: 'Poppins',
-                color: primaryTextColor,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w500,
-                fontSize: 12),
+            title: Text(
+              snap["username"],
+              style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  color: primaryTextColor,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15),
+            ),
+            subtitle: Text(
+              getDate(snap["dateTime"]),
+              style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  color: primaryTextColor,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 12),
+            ),
           ),
         ),
         const SizedBox(

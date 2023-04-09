@@ -72,4 +72,69 @@ class UserController extends GetxController {
     });
     isLoading.value = false;
   }
+
+  Future<void> updateFollowersAndFollowing(
+      String user1Id, String user2Id) async {
+    isLoading.value = true;
+    final user1Ref =
+        FirebaseFirestore.instance.collection('users').doc(user1Id);
+    final user2Ref =
+        FirebaseFirestore.instance.collection('users').doc(user2Id);
+
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      final user1Data = await transaction.get(user1Ref);
+      final user2Data = await transaction.get(user2Ref);
+
+      final user1Following = List<String>.from(user1Data.data()!['following']);
+      final user2Followers = List<String>.from(user2Data.data()!['followers']);
+
+      if (!user1Following.contains(user2Id)) {
+        user1Following.add(user2Id);
+        await transaction.update(user1Ref, {'following': user1Following});
+      }
+
+      if (!user2Followers.contains(user1Id)) {
+        user2Followers.add(user1Id);
+        await transaction.update(user2Ref, {'followers': user2Followers});
+      }
+    });
+    isLoading.value = false;
+  }
+
+  Future<bool> checkIfUserIsFollower(String user1Id, String user2Id) async {
+    isLoading.value = true;
+    final user2Ref =
+        FirebaseFirestore.instance.collection('users').doc(user2Id);
+    final user2Data = await user2Ref.get();
+    final user2Followers = List<String>.from(user2Data.data()!['followers']);
+    isLoading.value = false;
+    return user2Followers.contains(user1Id);
+  }
+
+  Future<void> unfollowUser(String user1Id, String user2Id) async {
+    isLoading.value = true;
+    final user1Ref =
+        FirebaseFirestore.instance.collection('users').doc(user1Id);
+    final user2Ref =
+        FirebaseFirestore.instance.collection('users').doc(user2Id);
+
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      final user1Data = await transaction.get(user1Ref);
+      final user2Data = await transaction.get(user2Ref);
+
+      final user1Following = List<String>.from(user1Data.data()!['following']);
+      final user2Followers = List<String>.from(user2Data.data()!['followers']);
+
+      if (user1Following.contains(user2Id)) {
+        user1Following.remove(user2Id);
+        await transaction.update(user1Ref, {'following': user1Following});
+      }
+
+      if (user2Followers.contains(user1Id)) {
+        user2Followers.remove(user1Id);
+        await transaction.update(user2Ref, {'followers': user2Followers});
+      }
+    });
+    isLoading.value = false;
+  }
 }
