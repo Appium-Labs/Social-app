@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:social_app/Controllers/PrfileController.dart';
+import 'package:social_app/Views/ChatScreen/AllChats.dart';
 import 'package:social_app/Views/HomeScreen/HomeScreen.dart';
 import 'package:social_app/Views/PostScreen/PostScreen.dart';
 import 'package:social_app/Views/SearchScreen/SearchScreen.dart';
@@ -22,7 +23,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     HomeScreen(),
     SearchScreen(),
     PostScreen(),
-    HomeScreen(),
+    AllChats(),
     ProfileScreen(),
   ];
 
