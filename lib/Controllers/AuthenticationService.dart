@@ -107,6 +107,8 @@ class AuthController extends GetxController {
         'gender': gender,
         'bio': bio,
         'profilePhoto': profilePhoto,
+        'followers': [],
+        'following': []
       });
 
       print('User added to Firestore successfully');
