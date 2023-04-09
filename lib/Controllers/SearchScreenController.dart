@@ -21,7 +21,7 @@ class SearchScreenController extends GetxController {
     final list = snap.docs;
     userList.value = list;
     for (var i = 0; i < userList.length; i++) {
-      print(userList[i]["username"]);
+      print(userList[i].id);
     }
   }
 }

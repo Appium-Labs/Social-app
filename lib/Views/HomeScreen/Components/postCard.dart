@@ -29,14 +29,17 @@ Widget postCard(final snap, final comments) {
               fit: BoxFit.fill,
             ),
           ),
-          title: Text(
-            snap["username"],
-            style: const TextStyle(
-                fontFamily: 'Poppins',
-                color: primaryTextColor,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w600,
-                fontSize: 15),
+          title: GestureDetector(
+            onTap: () {},
+            child: Text(
+              snap["username"],
+              style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  color: primaryTextColor,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15),
+            ),
           ),
           subtitle: Text(
             getDate(snap["dateTime"]),
