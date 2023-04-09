@@ -4,6 +4,16 @@ import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
+/// Default [FirebaseOptions] for use with your Firebase apps.
+///
+/// Example:
+/// ```dart
+/// import 'firebase_options.dart';
+/// // ...
+/// await Firebase.initializeApp(
+///   options: DefaultFirebaseOptions.currentPlatform,
+/// );
+/// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -34,41 +44,39 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCewIO4w20slk9vqRVRGkWiBaCEmDRAMac',
-    appId: '1:966329376483:web:999b351f6f93623a48afd6',
-    messagingSenderId: '966329376483',
-    projectId: 'socialapp-1fbd2',
-    authDomain: 'socialapp-1fbd2.firebaseapp.com',
-    storageBucket: 'socialapp-1fbd2.appspot.com',
+    apiKey: 'AIzaSyDbQ308UBtx54ph97NC_Yip8HGaWsAO9io',
+    appId: '1:554254052407:web:ba0c0e6ffdd96613e063b2',
+    messagingSenderId: '554254052407',
+    projectId: 'newsocial-bef86',
+    authDomain: 'newsocial-bef86.firebaseapp.com',
+    storageBucket: 'newsocial-bef86.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDCkHC58XbLwuysB4WVJnB0s41-MPye960',
-    appId: '1:966329376483:android:4ba5268c897f9d1f48afd6',
-    messagingSenderId: '966329376483',
-    projectId: 'socialapp-1fbd2',
-    storageBucket: 'socialapp-1fbd2.appspot.com',
+    apiKey: 'AIzaSyCI2yP8fQPg_5uH2wf9qAiKJiNRplZewA0',
+    appId: '1:554254052407:android:3bc8ef263180b90ae063b2',
+    messagingSenderId: '554254052407',
+    projectId: 'newsocial-bef86',
+    storageBucket: 'newsocial-bef86.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDoj24Se6GSDLPnp3-_nJWDVEcKCs0Ziao',
-    appId: '1:966329376483:ios:9bfbd66e2620b47948afd6',
-    messagingSenderId: '966329376483',
-    projectId: 'socialapp-1fbd2',
-    storageBucket: 'socialapp-1fbd2.appspot.com',
-    iosClientId:
-        '966329376483-qv84gfb3lpt8gh4prita0h8urqvcdico.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBI4idLv8E6dJoJjzR_jvP5yeQLxrv40_M',
+    appId: '1:554254052407:ios:0d388653d8a03834e063b2',
+    messagingSenderId: '554254052407',
+    projectId: 'newsocial-bef86',
+    storageBucket: 'newsocial-bef86.appspot.com',
+    iosClientId: '554254052407-e7qbkg7hpi7qrbi85s571o65c7nanmln.apps.googleusercontent.com',
     iosBundleId: 'com.example.socialApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDoj24Se6GSDLPnp3-_nJWDVEcKCs0Ziao',
-    appId: '1:966329376483:ios:9bfbd66e2620b47948afd6',
-    messagingSenderId: '966329376483',
-    projectId: 'socialapp-1fbd2',
-    storageBucket: 'socialapp-1fbd2.appspot.com',
-    iosClientId:
-        '966329376483-qv84gfb3lpt8gh4prita0h8urqvcdico.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBI4idLv8E6dJoJjzR_jvP5yeQLxrv40_M',
+    appId: '1:554254052407:ios:0d388653d8a03834e063b2',
+    messagingSenderId: '554254052407',
+    projectId: 'newsocial-bef86',
+    storageBucket: 'newsocial-bef86.appspot.com',
+    iosClientId: '554254052407-e7qbkg7hpi7qrbi85s571o65c7nanmln.apps.googleusercontent.com',
     iosBundleId: 'com.example.socialApp',
   );
 }

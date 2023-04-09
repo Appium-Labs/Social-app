@@ -135,7 +135,7 @@ class ProfileScreen extends StatelessWidget {
                             Column(
                               children: [
                                 Text(
-                                  (controller.user.value.following.length - 1)
+                                  (controller.user.value.following.length)
                                       .toString(),
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
@@ -150,7 +150,7 @@ class ProfileScreen extends StatelessWidget {
                             Column(
                               children: [
                                 Text(
-                                  (controller.user.value.followers.length - 1)
+                                  (controller.user.value.followers.length)
                                       .toString(),
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
