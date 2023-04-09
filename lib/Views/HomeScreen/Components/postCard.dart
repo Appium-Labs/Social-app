@@ -9,7 +9,7 @@ import '../CommentScreen.dart';
 
 Widget postCard(final snap, final comments) {
   HomeScreenController homeScreenController = Get.put(HomeScreenController());
-
+  print(snap["userID"]);
   return Container(
     decoration: BoxDecoration(
         color: postPrimaryColor,

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:social_app/Models/CommentModel.dart';
 import 'package:uuid/uuid.dart';
 
@@ -8,6 +9,7 @@ class HomeScreenController extends GetxController
     with GetTickerProviderStateMixin {
   TextEditingController commentController = TextEditingController();
   RxBool isUploadingComment = false.obs;
+  final prefs = GetStorage();
 
   @override
   void onInit() {
@@ -15,7 +17,7 @@ class HomeScreenController extends GetxController
   }
 
   void likeHandler(List<dynamic> postLikes, String postID) async {
-    const userID = "5mOCKrOcDuf3iqBp64Ls38boZ973";
+    var userID = prefs.read("user_id").toString();
     if (postLikes.contains(userID)) {
       await FirebaseFirestore.instance.collection("posts").doc(postID).update({
         "likes": FieldValue.arrayRemove([userID])
@@ -29,7 +31,7 @@ class HomeScreenController extends GetxController
 
   void commentLikeHandler(
       List<dynamic> commentLikes, String postID, String commentID) async {
-    const userID = "5mOCKrOcDuf3iqBp64Ls38boZ973";
+    var userID = prefs.read("user_id").toString();
     if (commentLikes.contains(userID)) {
       await FirebaseFirestore.instance
           .collection("posts")
@@ -53,7 +55,7 @@ class HomeScreenController extends GetxController
 
   void addComment(String postID, String userProfileImg, String username) async {
     isUploadingComment.value = true;
-    const userID = "5mOCKrOcDuf3iqBp64Ls38boZ973";
+    var userID = prefs.read("user_id").toString();
     String commentID = Uuid().v1();
     Comment comment = Comment(
         commentID: commentID,

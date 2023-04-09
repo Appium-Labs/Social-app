@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:get/route_manager.dart';
+import 'package:social_app/Controllers/PrfileController.dart';
 import 'package:social_app/Views/HomeScreen/HomeScreen.dart';
 import 'package:social_app/Views/PostScreen/PostScreen.dart';
 import 'package:social_app/Views/SearchScreen/SearchScreen.dart';
+
+import 'package:social_app/Views/ProfileScreen/ProfileScreen.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
@@ -18,7 +23,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     SearchScreen(),
     PostScreen(),
     HomeScreen(),
-    HomeScreen(),
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {

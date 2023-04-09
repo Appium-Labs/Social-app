@@ -8,7 +8,20 @@ import 'package:social_app/Models/PostModel.dart';
 import 'package:social_app/Services/StorageMethods.dart';
 import 'package:uuid/uuid.dart';
 
+import '../Models/UserModel.dart';
+
 class PostScreenController extends GetxController {
+  var user = UserModel(
+      fullname: "",
+      username: "",
+      email: "",
+      password: "",
+      dateOfBirth: "",
+      gender: "",
+      bio: "",
+      profilePhoto: "",
+      followers: [],
+      following: []).obs;
   Rx<Uint8List> image = Uint8List(0).obs;
   RxBool isSelected = false.obs;
   RxBool isImageUploading = false.obs;
@@ -31,7 +44,6 @@ class PostScreenController extends GetxController {
 
   void uploadPost(String caption) async {
     final FirebaseFirestore _firebaseStorage = FirebaseFirestore.instance;
-
     String userID = prefs.read("user_id");
     var postID = const Uuid().v1();
     isImageUploading.value = true;
@@ -44,9 +56,10 @@ class PostScreenController extends GetxController {
         caption: caption,
         userID: userID,
         likes: [],
-        userProfileImg:
-            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
-        username: "Ankur",
+        userProfileImg: user.value.profilePhoto == ""
+            ? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+            : user.value.profilePhoto,
+        username: user.value.fullname,
         postUrl: postUrl,
         dateTime: DateTime.now());
     await _firebaseStorage
@@ -61,5 +74,36 @@ class PostScreenController extends GetxController {
     print("hellllllllllllo");
     Get.snackbar("Uploaded", "Image has been uploaded");
     print("success");
+  }
+
+  void getCurrentUser() async {
+    // isLoading.value = true;
+    final CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('users');
+    DocumentSnapshot documentSnapshot =
+        await usersCollection.doc(prefs.read("user_id").toString()).get();
+
+    if (documentSnapshot.exists) {
+      // Document exists
+      var data = documentSnapshot;
+
+      UserModel currUser = UserModel(
+          fullname: data.get("fullname"),
+          username: data.get("username"),
+          email: data.get("email"),
+          password: "",
+          dateOfBirth: data.get("dateOfBirth"),
+          gender: data.get("gender"),
+          bio: data.get("bio"),
+          profilePhoto: data.get("profilePhoto"),
+          followers: data.get("followers"),
+          following: data.get("following"));
+      user.value = currUser;
+      // Access the data using data["fieldName"]
+    } else {
+      // Document does not exist
+    }
+
+    // isLoading.value = false;
   }
 }
