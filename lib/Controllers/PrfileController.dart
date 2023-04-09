@@ -63,7 +63,6 @@ class ProfileController extends GetxController {
     if (documentSnapshot.exists) {
       // Document exists
       var data = documentSnapshot;
-
       UserModel currUser = UserModel(
           fullname: data.get("fullname"),
           username: data.get("username"),

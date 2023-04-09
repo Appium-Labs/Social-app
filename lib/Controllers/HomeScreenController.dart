@@ -10,10 +10,21 @@ class HomeScreenController extends GetxController
   TextEditingController commentController = TextEditingController();
   RxBool isUploadingComment = false.obs;
   final prefs = GetStorage();
+  RxString username = "".obs;
+  RxString profileImg = "".obs;
 
   @override
   void onInit() {
     super.onInit();
+    getUser();
+  }
+
+  void getUser() async {
+    var userID = prefs.read("user_id");
+    DocumentSnapshot snap =
+        await FirebaseFirestore.instance.collection("users").doc(userID).get();
+    username.value = snap.get("username");
+    profileImg.value = snap.get("profilePhoto");
   }
 
   void likeHandler(List<dynamic> postLikes, String postID) async {

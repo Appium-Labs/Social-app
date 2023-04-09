@@ -12,7 +12,7 @@ Widget postCard(final snap, final comments) {
   print(snap["userID"]);
   return Container(
     decoration: BoxDecoration(
-        color: postPrimaryColor,
+        color: postPrimaryColor.withOpacity(0.1),
         borderRadius: const BorderRadius.all(Radius.circular(10))),
     margin: const EdgeInsets.symmetric(vertical: 10),
     padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 13),
@@ -51,28 +51,48 @@ Widget postCard(final snap, final comments) {
         const SizedBox(
           height: 12,
         ),
-        Text(
-          snap["caption"],
-          style: const TextStyle(
-              fontFamily: 'Roboto',
-              color: primaryTextColor,
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w400,
-              fontSize: 12),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
         Container(
           decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.2),
               borderRadius: const BorderRadius.all(Radius.circular(10)),
               border: Border.all(width: 0.5, color: Colors.black)),
           width: double.infinity,
-          height: 200,
-          child: Image.network(
-            snap["postUrl"],
+          height: 250,
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            child: Image.network(
+              snap["postUrl"],
+              fit: BoxFit.fill,
+            ),
           ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        Row(
+          children: [
+            Text(
+              snap["username"],
+              style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  color: primaryTextColor,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15),
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            Text(
+              snap["caption"],
+              style: const TextStyle(
+                  fontFamily: 'Roboto',
+                  color: primaryTextColor,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12),
+            ),
+          ],
         ),
         const SizedBox(
           height: 9,

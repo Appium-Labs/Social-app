@@ -23,8 +23,7 @@ class UserScreen extends StatelessWidget {
       body: Obx(
         () => controller.isLoading.value
             ? const Center(
-                child:
-                    CircularProgressIndicator(color: const Color(0xff1C6758)),
+                child: CircularProgressIndicator(color: Color(0xff1C6758)),
               )
             : Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
