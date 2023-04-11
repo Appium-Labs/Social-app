@@ -10,7 +10,7 @@ class Chat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width / 2,
+      width: MediaQuery.of(context).size.width / 1.8,
       padding: const EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 5),
       alignment: Alignment.center,
       decoration: BoxDecoration(

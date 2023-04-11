@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,7 +11,7 @@ import 'package:social_app/Controllers/ChatController.dart';
 
 import 'Components/Chat.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   String peerName;
   String peerProfileImg;
   String peerID;
@@ -25,11 +26,28 @@ class ChatScreen extends StatelessWidget {
       required this.roomID});
 
   @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  ScrollController _scrollController = ScrollController();
+
+  _scrollToBottom() {
+    if (_scrollController.hasClients)
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     ChatController chatController = Get.find();
     final prefs = GetStorage();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => chatController.scrollDown());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
     return Scaffold(
       // bottomNavigationBar: TextField(),
       appBar: AppBar(
@@ -40,7 +58,7 @@ class ChatScreen extends StatelessWidget {
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(100)),
               child: Image.network(
-                peerProfileImg,
+                widget.peerProfileImg,
                 height: 10,
                 width: 50,
               ),
@@ -63,7 +81,7 @@ class ChatScreen extends StatelessWidget {
         toolbarHeight: 75,
         centerTitle: true,
         title: Text(
-          peerName,
+          widget.peerName,
           style: const TextStyle(
               fontFamily: 'Poppins',
               color: primaryTextColor,
@@ -81,7 +99,7 @@ class ChatScreen extends StatelessWidget {
           child: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection("chats")
-                .doc(roomID)
+                .doc(widget.roomID)
                 .collection("messages")
                 .orderBy("msgTime", descending: false)
                 .snapshots(),
@@ -91,7 +109,7 @@ class ChatScreen extends StatelessWidget {
               }
               return ListView.builder(
                 // reverse: true,
-                controller: chatController.scrollController,
+                controller: _scrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: snapshot.data!.docs.length + 1,
@@ -102,14 +120,15 @@ class ChatScreen extends StatelessWidget {
                     );
                   }
                   return Container(
-                    alignment: snapshot.data!.docs[index]["userID"] == userID
-                        ? Alignment.topRight
-                        : Alignment.topLeft,
+                    alignment:
+                        snapshot.data!.docs[index]["userID"] == widget.userID
+                            ? Alignment.topRight
+                            : Alignment.topLeft,
                     margin: const EdgeInsets.symmetric(vertical: 9),
                     child: Chat(
                         snap: snapshot.data!.docs[index],
-                        sentByMe:
-                            snapshot.data!.docs[index]["userID"] == userID),
+                        sentByMe: snapshot.data!.docs[index]["userID"] ==
+                            widget.userID),
                   );
                 },
               );
@@ -128,7 +147,9 @@ class ChatScreen extends StatelessWidget {
                     chatController.currMsg =
                         chatController.messageController.text;
                     chatController.messageController.text = "";
-                    chatController.sendMessage(peerID, userID, peerProfileImg);
+                    chatController.scrollDown();
+                    chatController.sendMessage(widget.peerID, widget.userID,
+                        widget.peerProfileImg, widget.roomID);
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
