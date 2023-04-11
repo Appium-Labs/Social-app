@@ -21,13 +21,12 @@ class ChatController extends GetxController {
 
   void scrollDown() {
     if (scrollController.hasClients) {
-      scrollController.animateTo(scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+      scrollController.jumpTo(scrollController.position.maxScrollExtent);
     }
-    // scrollController.jumpTo(scrollController.position.maxScrollExtent);
   }
 
-  void sendMessage(String peerID, String userID, String peerProfileUrl) async {
+  void sendMessage(
+      String peerID, String userID, String peerProfileUrl, String rID) async {
     if (currMsg.isEmpty) {
       return;
     }
@@ -44,20 +43,15 @@ class ChatController extends GetxController {
 
     await FirebaseFirestore.instance
         .collection("chats")
-        .doc(roomID.value)
+        .doc(rID)
         .collection("messages")
         .doc(messageID)
         .set(message.toJson())
         .whenComplete(() {
       messageController.text = "";
     });
-    await FirebaseFirestore.instance
-        .collection("chats")
-        .doc(roomID.value)
-        .update({
-      "lastMsg": currMsg,
-      "lastMsgTime": DateTime.now()
-    }).whenComplete(() {
+    await FirebaseFirestore.instance.collection("chats").doc(rID).update(
+        {"lastMsg": currMsg, "lastMsgTime": DateTime.now()}).whenComplete(() {
       currMsg = "";
     });
   }
